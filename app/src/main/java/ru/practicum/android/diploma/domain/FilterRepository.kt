@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
 
-interface FilterInteractor {
+interface FilterRepository {
     fun currentFilter(): Filter
     fun appliedFilter(): Filter
     fun setCountry(country: Area?)

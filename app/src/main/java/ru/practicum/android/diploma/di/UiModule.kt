@@ -34,30 +34,46 @@ val uiModule = module {
     }
 
     viewModel<FavoritesViewModel> {
-        FavoritesViewModel(get())
+        FavoritesViewModel(
+            favoritesInteractor = get(),
+        )
     }
 
     viewModel<WorkplaceViewModel> {
-        WorkplaceViewModel(get(), get())
+        WorkplaceViewModel(
+            filterInteractor = get(),
+            selectedRegionInteractor = get(),
+            dictionariesInteractor = get(),
+        )
     }
 
     viewModel<CountryViewModel> {
-        CountryViewModel(get(), get())
+        CountryViewModel(
+            selectedRegionInteractor = get(),
+            dictionariesInteractor = get(),
+        )
     }
 
     viewModel<RegionViewModel> {
-        RegionViewModel(get(), get())
+        RegionViewModel(
+            filterInteractor = get(),
+            selectedRegionInteractor = get(),
+            dictionariesInteractor = get(),
+        )
     }
 
     viewModel<IndustryViewModel> {
         IndustryViewModel(
             dictionariesInteractor = get(),
             filterInteractor = get(),
-            application = get()
+            application = get(),
         )
     }
 
     viewModel<FilterViewModel> {
-        FilterViewModel(get(), get())
+        FilterViewModel(
+            filterInteractor = get(),
+            application = get(),
+        )
     }
 }

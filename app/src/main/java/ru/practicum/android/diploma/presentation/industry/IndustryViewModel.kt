@@ -21,20 +21,23 @@ class IndustryViewModel(
 
     private val stateLiveData = MutableLiveData<IndustryState>()
     private var latestSearchText: String? = null
-    private var industriesList = listOf<Industry>()
+    private var industriesList: List<Industry>? = null
     fun observeState(): LiveData<IndustryState> = stateLiveData
 
     init {
-        stateLiveData.postValue(IndustryState.Loading)
+        loadIndustries()
+    }
 
+    private fun loadIndustries() {
+        stateLiveData.postValue(IndustryState.Loading)
         viewModelScope.launch {
             dictionariesInteractor.getIndustries().collect {
                 if (it.errorType != null) {
-                    industriesList = emptyList()
+                    industriesList = null
                     stateLiveData.postValue(IndustryState.Error(it.errorType))
                 } else if (it.data != null) {
                     industriesList = it.data
-                    stateLiveData.postValue(IndustryState.Content(industriesList))
+                    postFilteredIndustries(industriesList!!, latestSearchText)
                 }
             }
         }
@@ -53,13 +56,21 @@ class IndustryViewModel(
         }
 
     private fun searchIndustries(searchText: String) {
-        stateLiveData.postValue(IndustryState.Loading)
-
-        val filteredIndustries = industriesList.filter { industry: Industry ->
-            industry.name.contains(searchText)
+        if (industriesList == null) {
+            loadIndustries()
+        } else {
+            postFilteredIndustries(industriesList!!, searchText)
         }
+    }
 
-        if (filteredIndustries.isEmpty()) {
+    private fun postFilteredIndustries(industries: List<Industry>, filterString: String?) {
+        var filtered = industries
+        if (filterString != null) {
+            filtered = filtered.filter {
+                it.name.contains(filterString, ignoreCase = true)
+            }
+        }
+        if (filtered.isEmpty()) {
             stateLiveData.postValue(
                 IndustryState.Empty(
                     message = getApplication<Application>().getString(
@@ -68,7 +79,7 @@ class IndustryViewModel(
                 )
             )
         } else {
-            stateLiveData.postValue(IndustryState.Content(filteredIndustries))
+            stateLiveData.postValue(IndustryState.Content(filtered))
         }
     }
 

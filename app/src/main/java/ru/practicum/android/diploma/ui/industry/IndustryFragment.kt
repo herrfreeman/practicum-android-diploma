@@ -37,20 +37,24 @@ class IndustryFragment : Fragment() {
     }
 
     private fun showContent(industryList: List<Industry>) {
-        binding.progressBar.isVisible = false
-        binding.centralImageHolder.isVisible = false
-        binding.recyclerView.isVisible = true
-        binding.stateTextView.isVisible = false
-        binding.selectButton.isVisible = false
+        with(binding) {
+            progressBar.isVisible = false
+            centralImageHolder.isVisible = false
+            recyclerView.isVisible = true
+            stateTextView.isVisible = false
+            selectButton.isVisible = false
+        }
         industryAdapter.setData(industryList)
     }
 
     private fun showLoading() {
-        binding.progressBar.isVisible = true
-        binding.centralImageHolder.isVisible = false
-        binding.recyclerView.isVisible = false
-        binding.stateTextView.isVisible = false
-        binding.selectButton.isVisible = false
+        with(binding) {
+            progressBar.isVisible = true
+            centralImageHolder.isVisible = false
+            recyclerView.isVisible = false
+            stateTextView.isVisible = false
+            selectButton.isVisible = false
+        }
     }
 
     private fun showEmpty(message: String) {
@@ -81,14 +85,20 @@ class IndustryFragment : Fragment() {
     }
 
     private fun showImageAndTextState() {
-        binding.progressBar.isVisible = false
-        binding.centralImageHolder.isVisible = true
-        binding.recyclerView.isVisible = false
-        binding.stateTextView.isVisible = true
-        binding.selectButton.isVisible = false
+        with(binding) {
+            progressBar.isVisible = false
+            centralImageHolder.isVisible = true
+            recyclerView.isVisible = false
+            stateTextView.isVisible = true
+            selectButton.isVisible = false
+        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentIndustryBinding.inflate(inflater, container, false)
         return binding.root
     }
